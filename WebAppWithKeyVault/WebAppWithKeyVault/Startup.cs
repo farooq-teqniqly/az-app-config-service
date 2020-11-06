@@ -1,3 +1,4 @@
+using Azure.Data.AppConfiguration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,12 @@ namespace WebAppWithKeyVault
             {
                 apiConfiguration.Message = this.Configuration["TestConsoleApp:Settings:Message"];
                 apiConfiguration.SecretMessage = this.Configuration["TestApp:Settings:KeyVaultMessage"];
+            });
+
+            services.AddSingleton<ConfigurationClient>(provider =>
+            {
+                var connectionString = this.Configuration["ConnectionStrings:AppConfig"];
+                return new ConfigurationClient(connectionString);
             });
         }
 
